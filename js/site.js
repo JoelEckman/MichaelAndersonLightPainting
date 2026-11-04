@@ -1,5 +1,6 @@
 /* Michael Anderson Light Painting — small enhancements. Content works without this file. */
 (function(){
+  document.documentElement.classList.add('js'); // js-flag
   // current page in the menu (qikEdit strips hard-coded active classes)
   var here=location.pathname.replace(/\/$/,'/index.html').replace(/\.html$/,'');
   if(here==='/') here='/index';
@@ -35,8 +36,41 @@
     function step(t){ if(stopped)return; if(t0===null)t0=t; var p=Math.min((t-t0)/dur,1);
       var v=50+Math.sin(p*Math.PI*2)*-32*(1-p*0.15); if(p>=1)v=50;
       hero.style.setProperty('--pos',v+'%'); r.value=v; if(p<1)requestAnimationFrame(step); }
-    setTimeout(function(){requestAnimationFrame(step)},700);
+    setTimeout(function(){requestAnimationFrame(step)},1900);
   }
+
+  // paint it yourself: reveal the light painting under a glowing brush
+  if(!inEditor)document.querySelectorAll('[data-paint]').forEach(function(stage){
+    var after=stage.querySelector('.paint-after img'),before=stage.querySelector('.paint-before img');
+    if(!after||!before)return;
+    var view=document.createElement('canvas'),trail=document.createElement('canvas'),mask=document.createElement('canvas');
+    var cur=document.createElement('span');cur.className='paint-cursor';
+    stage.insertBefore(view,stage.querySelector('.paint-hint'));stage.insertBefore(trail,stage.querySelector('.paint-hint'));stage.appendChild(cur);
+    var vx=view.getContext('2d'),tx=trail.getContext('2d'),mx=mask.getContext('2d'),W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2),last=null,raf=null,all=false;
+    var img=new Image();img.src=after.currentSrc||after.src;
+    function size(){var r=stage.getBoundingClientRect();var nw=Math.round(r.width*dpr),nh=Math.round(r.height*dpr);if(nw===W&&nh===H)return;
+      var old=null;if(W&&H){old=document.createElement('canvas');old.width=W;old.height=H;old.getContext('2d').drawImage(mask,0,0)}
+      W=nw;H=nh;[view,trail,mask].forEach(function(c){c.width=W;c.height=H});if(old)mx.drawImage(old,0,0,W,H);render()}
+    function render(){if(!img.complete||!W)return;vx.clearRect(0,0,W,H);vx.globalCompositeOperation='source-over';vx.drawImage(mask,0,0);vx.globalCompositeOperation='source-in';vx.drawImage(img,0,0,W,H);vx.globalCompositeOperation='source-over'}
+    function brush(x,y){var r=Math.max(W,H)*0.055;var g=mx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(0,0,0,.55)');g.addColorStop(.6,'rgba(0,0,0,.25)');g.addColorStop(1,'rgba(0,0,0,0)');mx.fillStyle=g;mx.beginPath();mx.arc(x,y,r,0,Math.PI*2);mx.fill()}
+    function stroke(a,b){var d=Math.hypot(b.x-a.x,b.y-a.y),n=Math.max(1,Math.ceil(d/(W*0.012)));for(var i=1;i<=n;i++)brush(a.x+(b.x-a.x)*i/n,a.y+(b.y-a.y)*i/n);
+      tx.save();tx.strokeStyle='rgba(255,214,150,.95)';tx.lineWidth=3*dpr;tx.lineCap='round';tx.shadowColor='rgba(240,180,92,1)';tx.shadowBlur=18*dpr;tx.beginPath();tx.moveTo(a.x,a.y);tx.lineTo(b.x,b.y);tx.stroke();tx.restore();render();loop()}
+    var lastT=0;
+    function loop(){lastT=performance.now();if(raf)return;raf=requestAnimationFrame(function f(){raf=null;tx.save();tx.globalCompositeOperation='destination-out';tx.fillStyle='rgba(0,0,0,.08)';tx.fillRect(0,0,W,H);tx.restore();
+      if(performance.now()-lastT<1600)raf=requestAnimationFrame(f);else tx.clearRect(0,0,W,H)})}
+    function pt(e){var r=stage.getBoundingClientRect();cur.style.left=(e.clientX-r.left)+'px';cur.style.top=(e.clientY-r.top)+'px';return{x:(e.clientX-r.left)*dpr,y:(e.clientY-r.top)*dpr}}
+    var down=false;
+    stage.addEventListener('pointerdown',function(e){down=true;stage.classList.add('painting','started');stage.setPointerCapture(e.pointerId);last=pt(e);stroke(last,last)});
+    stage.addEventListener('pointermove',function(e){var p=pt(e);if(e.pointerType==='mouse'&&!down){stage.classList.add('started');}if(down||e.pointerType==='mouse'){if(last)stroke(last,p);last=p}});
+    stage.addEventListener('pointerleave',function(){last=null});
+    ['pointerup','pointercancel'].forEach(function(t){stage.addEventListener(t,function(){down=false;last=null;stage.classList.remove('painting')})});
+    var sec=stage.closest('section');
+    var rb=sec&&sec.querySelector('[data-paint-reset]'),ab=sec&&sec.querySelector('[data-paint-all]');
+    if(rb)rb.addEventListener('click',function(){mx.clearRect(0,0,W,H);tx.clearRect(0,0,W,H);stage.classList.remove('started');render()});
+    if(ab)ab.addEventListener('click',function(){var t0=null;stage.classList.add('started');(function f(t){if(t0===null)t0=t;var p=Math.min((t-t0)/900,1);mx.fillStyle='rgba(0,0,0,'+(0.12)+')';mx.fillRect(0,0,W,H);render();if(p<1)requestAnimationFrame(f)})(performance.now())});
+    img.onload=function(){size()};if(img.complete)size();
+    window.addEventListener('resize',size);
+  });
   // gallery cards: slider when there is a setup photo, lightbox, expandable captions
   function lightbox(src,alt,back){
     var lb=document.createElement('div');lb.className='lightbox';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');

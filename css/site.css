@@ -1,8 +1,8 @@
 /* Michael Anderson Light Painting — site styles */
 :root{
-  --night:#0d1524;      /* page background: Minnesota night sky */
-  --dusk:#162238;       /* raised surfaces */
-  --haze:#26344f;       /* borders, rules */
+  --night:#05070c;      /* page background: a true night sky */
+  --dusk:#0c111c;       /* raised surfaces */
+  --haze:#1c2536;       /* borders, rules */
   --moon:#e7eaf1;       /* main text */
   --mist:#a3adc2;       /* secondary text */
   --tungsten:#f0b45c;   /* accent: warm light of the wands */
@@ -15,7 +15,7 @@
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:radial-gradient(1400px 700px at 85% -5%,rgba(240,180,92,.08),transparent 60%),radial-gradient(1200px 800px at 0% 30%,rgba(70,100,170,.10),transparent 60%),linear-gradient(180deg,#070b15 0%,var(--night) 35%,#0b1220 100%);background-attachment:fixed;color:var(--moon);font:400 1.125rem/1.7 var(--serif);-webkit-font-smoothing:antialiased}
+body{margin:0;background:radial-gradient(1200px 600px at 85% -8%,rgba(240,180,92,.07),transparent 60%),radial-gradient(1000px 700px at -5% 35%,rgba(60,85,150,.07),transparent 60%),linear-gradient(180deg,#04060a 0%,var(--night) 40%,#06080e 100%);background-attachment:fixed;color:var(--moon);font:400 1.125rem/1.7 var(--serif);-webkit-font-smoothing:antialiased}
 
 /* starfield: a faint fixed layer behind everything */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55;
@@ -242,3 +242,56 @@ main{padding-bottom:5rem}
 .contact-list li{padding:.7rem 0;border-top:1px solid var(--haze);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.3rem 1rem}
 .contact-list span{font:500 .85rem var(--display);color:var(--mist)}
 .contact-list a{font:500 1rem var(--display);text-decoration:none}
+
+
+/* ===== night palette: darker, so the photos glow ===== */
+.site-header{background:rgba(4,6,10,.88)}
+.band{background:none;border-top:1px solid var(--haze);border-bottom:0}
+.pairs-band,.about-band{background:radial-gradient(900px 420px at 50% 0%,rgba(60,85,150,.08),transparent 70%)}
+.price{background:rgba(12,17,28,.7)}
+.portfolio-item .frame,.compare{background:#0a0d14}
+.page-banner::after{background:linear-gradient(180deg,rgba(4,6,10,.05) 0%,rgba(4,6,10,.3) 55%,var(--night) 100%)}
+.cta-bg::after{background:linear-gradient(90deg,rgba(4,6,10,.94) 0%,rgba(4,6,10,.62) 42%,rgba(4,6,10,0) 75%)}
+.compare::after{width:3px;margin-left:-1.5px;background:linear-gradient(180deg,rgba(255,224,173,0),#ffe0ad 18%,#f0b45c 50%,#ffe0ad 82%,rgba(255,224,173,0));box-shadow:0 0 14px 3px rgba(240,180,92,.8),0 0 40px 8px rgba(240,180,92,.25)}
+
+/* ===== light trails under headings ===== */
+.section-head h2,.page-head h1,.about-copy h2,.cta-inner h2,.example-grid h2,.request-grid h2{position:relative;padding-bottom:.55em}
+.section-head h2::after,.page-head h1::after,.about-copy h2::after,.cta-inner h2::after,.example-grid h2::after,.request-grid h2::after{
+  content:"";position:absolute;left:-.1em;bottom:0;width:min(240px,70%);height:16px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f0b45c' stop-opacity='0'/%3E%3Cstop offset='.3' stop-color='%23f0b45c'/%3E%3Cstop offset='.85' stop-color='%23ffe0ad'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 17 C 60 4, 110 22, 170 11 S 225 6, 237 9' fill='none' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") left center/100% 100% no-repeat;
+  filter:drop-shadow(0 0 4px rgba(240,180,92,.9)) drop-shadow(0 0 12px rgba(240,180,92,.4))}
+.pairs-band .section-head h2::after,.page-head h1::after,.request-grid h2::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f0b45c' stop-opacity='0'/%3E%3Cstop offset='.3' stop-color='%23f0b45c'/%3E%3Cstop offset='.85' stop-color='%23ffe0ad'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 8 C 50 20, 120 2, 180 14 S 228 18, 237 13' fill='none' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E")}
+.process .section-head h2::after,.about-copy h2::after,.cta-inner h2::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f0b45c' stop-opacity='0'/%3E%3Cstop offset='.3' stop-color='%23f0b45c'/%3E%3Cstop offset='.85' stop-color='%23ffe0ad'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 14 C 70 14, 120 3, 175 9 S 230 19, 237 15' fill='none' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E")}
+.page-head h1::after{width:min(300px,80%)}
+
+/* the hero trail draws itself once, like a wand moving through a long exposure */
+.trail{background:none!important;height:auto}
+.trail svg{display:block;width:100%;height:46px;overflow:visible}
+.trail path{fill:none;stroke:url(#trailGrad);stroke-width:3.2;stroke-linecap:round}
+.trail .tip{fill:#fff;filter:url(#tipGlow);opacity:0}
+.js .trail path{stroke-dasharray:640;stroke-dashoffset:640;animation:draw 1.5s cubic-bezier(.55,.1,.3,1) .35s forwards}
+.js .trail .tip{animation:tip 1.5s cubic-bezier(.55,.1,.3,1) .35s forwards;offset-path:path("M4 34 C 120 6, 210 44, 320 22 S 500 8, 556 18");offset-rotate:0deg}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes tip{0%{offset-distance:0%;opacity:0}8%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@media (prefers-reduced-motion:reduce){.js .trail path{animation:none;stroke-dashoffset:0}.js .trail .tip{display:none}}
+.in-editor .trail path{animation:none;stroke-dashoffset:0}
+
+/* ===== paint it yourself ===== */
+.paint{padding:5rem var(--gutter);border-top:1px solid var(--haze)}
+.paint-stage{position:relative;max-width:1200px;margin:0 auto;overflow:hidden;border-radius:2px;box-shadow:0 0 0 1px var(--haze),0 40px 120px -40px rgba(240,180,92,.35);cursor:none;touch-action:none;user-select:none;-webkit-user-select:none}
+.paint-stage img{display:block;width:100%;height:auto}
+.paint-stage .paint-before img{filter:brightness(.28) saturate(.6)}
+.paint-stage .paint-after{position:absolute;inset:0;visibility:hidden}
+.paint-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.paint-cursor{position:absolute;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,240,210,.95) 0 3px,rgba(240,180,92,.35) 5px,rgba(240,180,92,0) 70%);opacity:0;transition:opacity .2s}
+.paint-stage:hover .paint-cursor,.paint-stage.painting .paint-cursor{opacity:1}
+.paint-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:500 clamp(.95rem,2vw,1.2rem) var(--display);color:var(--moon);background:rgba(4,6,10,.6);border:1px solid rgba(240,180,92,.5);padding:.7rem 1.1rem;border-radius:3px;pointer-events:none;transition:opacity .4s;text-align:center}
+.paint-stage.started .paint-hint{opacity:0}
+.paint-controls{display:flex;flex-wrap:wrap;gap:1rem 1.6rem;align-items:center;max-width:1200px;margin:1.2rem auto 0}
+.paint-controls button{font:500 .9rem var(--display);color:var(--moon);background:none;border:1px solid var(--haze);border-radius:3px;padding:.5rem .9rem;cursor:pointer}
+.paint-controls button:hover{border-color:var(--tungsten);color:var(--tungsten)}
+.paint-caption{color:var(--mist);font-size:.95rem;margin:0}
+.paint .section-head{max-width:1200px}
+.no-js .paint-stage .paint-before img,.in-editor .paint-stage .paint-before img{filter:none}
+.in-editor .paint-stage{cursor:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.in-editor .paint-stage .paint-after{position:relative;visibility:visible}
+.in-editor .paint-hint,.in-editor .paint-cursor,.in-editor .paint-controls button{display:none}
