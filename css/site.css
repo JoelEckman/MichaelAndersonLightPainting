@@ -314,3 +314,15 @@ main{padding-bottom:5rem}
 
 /* story cards keep their paragraph breaks (stored as blank lines in the text) */
 .portfolio-grid .portfolio-item p{white-space:pre-line}
+
+/* projects with several photos: thumbnail strip and a lightbox you can step through */
+.more-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:-.4rem 0 .9rem}
+.more-strip button{position:relative;padding:0;border:1px solid var(--haze);background:#0a0d14;aspect-ratio:3/2;overflow:hidden;cursor:zoom-in}
+.more-strip button:hover{border-color:var(--tungsten)}
+.more-strip img{width:100%;height:100%;object-fit:cover;display:block}
+.more-strip span{position:absolute;inset:0;display:grid;place-items:center;background:rgba(4,6,10,.65);font:700 .95rem var(--display);color:var(--moon)}
+.lightbox .lb-close{position:absolute;top:1rem;right:1rem}
+.lightbox .lb-prev,.lightbox .lb-next{position:absolute;top:50%;transform:translateY(-50%);width:3rem;height:3rem;font:400 2rem/1 var(--display);color:var(--moon);background:rgba(4,6,10,.6);border:1px solid var(--haze);border-radius:50%;cursor:pointer}
+.lightbox .lb-prev{left:1rem}.lightbox .lb-next{right:1rem}
+.lightbox .lb-prev:hover,.lightbox .lb-next:hover{border-color:var(--tungsten);color:var(--tungsten)}
+.lightbox .lb-count{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font:500 .85rem var(--display);color:var(--mist)}
