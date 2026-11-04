@@ -210,3 +210,35 @@ main{padding-bottom:5rem}
 .in-editor .compare-before{position:relative;clip-path:none}
 .in-editor .compare-after{position:relative}
 .in-editor .compare{aspect-ratio:auto!important;display:grid;grid-template-columns:1fr 1fr;gap:4px}
+
+/* menu: Commissions as the standout action */
+.main-menu a[href="/commissions.html"]{color:var(--night);background:var(--tungsten);padding:.45rem .9rem;border-radius:3px;border-bottom:0}
+.main-menu a[href="/commissions.html"]:hover,.main-menu a[href="/commissions.html"].is-current{background:#fff;color:var(--night)}
+@media (max-width:1060px){.main-menu a[href="/commissions.html"]{display:inline-block;margin-top:.4rem}}
+
+/* commissions page */
+.contact-actions{display:flex;flex-wrap:wrap;gap:1rem 1.6rem;align-items:center;margin-top:1.8rem}
+.contact-chip{display:flex;flex-direction:column;font:700 1.05rem var(--display);color:var(--moon);text-decoration:none;line-height:1.25}
+.contact-chip span{font:500 .78rem var(--display);color:var(--mist)}
+.contact-chip:hover{color:var(--tungsten)}
+.commission-pricing{padding:3.5rem var(--gutter) 4.5rem}
+.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1.5rem;max-width:1500px;margin:0 auto}
+.price{border:1px solid var(--haze);border-radius:4px;padding:1.6rem 1.5rem;background:rgba(22,34,56,.55)}
+.price.featured{border-color:var(--tungsten);box-shadow:0 0 40px -12px rgba(240,180,92,.45)}
+.price h3{font-size:1.05rem;margin-bottom:.6rem}
+.price .amount{font:800 clamp(1.7rem,3vw,2.3rem)/1.1 var(--display);font-stretch:125%;color:var(--tungsten);margin:0 0 .7rem}
+.price p{margin:0;color:var(--mist);font-size:1rem;line-height:1.55}
+.fine-print{max-width:1500px;margin:1.6rem auto 0;color:var(--mist);font-size:.95rem}
+.example-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(2rem,5vw,4rem);align-items:center;max-width:1500px;margin:0 auto}
+@media (max-width:860px){.example-grid{grid-template-columns:1fr}}
+.example-grid h2{margin-top:0}
+.example-grid p{color:#c9d0de;max-width:52ch}
+.steps-5{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.request-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,4rem);max-width:1500px;margin:0 auto;align-items:start}
+@media (max-width:860px){.request-grid{grid-template-columns:1fr}}
+.request-grid h2{margin-top:0;font-size:clamp(1.8rem,3.6vw,2.6rem)}
+.request-grid p{color:#c9d0de;max-width:52ch}
+.contact-list{list-style:none;padding:0;margin:1.6rem 0 0}
+.contact-list li{padding:.7rem 0;border-top:1px solid var(--haze);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.3rem 1rem}
+.contact-list span{font:500 .85rem var(--display);color:var(--mist)}
+.contact-list a{font:500 1rem var(--display);text-decoration:none}
