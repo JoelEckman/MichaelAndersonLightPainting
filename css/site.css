@@ -299,3 +299,15 @@ main{padding-bottom:5rem}
 .in-editor .paint-stage{cursor:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .in-editor .paint-stage .paint-after{position:relative;visibility:visible}
 .in-editor .paint-hint,.in-editor .paint-cursor,.in-editor .paint-controls button{display:none}
+
+/* thank-you page */
+.thanks{padding:1rem var(--gutter) 4rem}
+.thanks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:1.8rem;max-width:1100px;margin:0 auto}
+.thanks-card{border:1px solid var(--haze);border-radius:4px;padding:1.8rem;background:rgba(12,17,28,.7)}
+.thanks-card h2{margin:0 0 .4rem;font-size:1.4rem}
+.thanks-card p{color:var(--mist);margin:.4rem 0 0}
+.social-buttons{list-style:none;padding:0;margin:1.4rem 0 0;display:flex;flex-wrap:wrap;gap:.8rem}
+.social-buttons a{display:inline-block;font:500 .95rem var(--display);color:var(--moon);text-decoration:none;border:1px solid var(--haze);border-radius:3px;padding:.6rem 1.1rem}
+.social-buttons a:hover{border-color:var(--tungsten);color:var(--tungsten)}
+.thanks-more{max-width:1100px;margin:3.5rem auto 0}
+.thanks-more h2{font-size:clamp(1.5rem,3vw,2rem);margin:0}
