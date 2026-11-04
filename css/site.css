@@ -204,3 +204,9 @@ main{padding-bottom:5rem}
 .footer-name{font:700 1.05rem var(--display);font-stretch:125%;color:var(--moon)}
 .social{list-style:none;display:flex;flex-wrap:wrap;gap:1.2rem;margin:0;padding:0;font-family:var(--display)}
 .fine{max-width:1500px;margin:2.5rem auto 0;font-size:.85rem}
+
+/* in the qikEdit editor: no slider layers over the photos, both photos clickable */
+.in-editor .compare-range,.in-editor .compare::before,.in-editor .compare::after,.in-editor .compare-tag{display:none}
+.in-editor .compare-before{position:relative;clip-path:none}
+.in-editor .compare-after{position:relative}
+.in-editor .compare{aspect-ratio:auto!important;display:grid;grid-template-columns:1fr 1fr;gap:4px}

@@ -12,6 +12,12 @@
   if(t&&n)t.addEventListener('click',function(){var o=n.classList.toggle('open');t.setAttribute('aria-expanded',o)});
   // footer year
   document.querySelectorAll('[data-year]').forEach(function(e){e.textContent=new Date().getFullYear()});
+  // Inside the qikEdit editor (the page is framed) or with ?edit in the address, skip the
+  // interactive extras so the editor can click every tagged photo and field.
+  var inEditor=false;
+  try{inEditor=window.self!==window.top}catch(e){inEditor=true}
+  if(/[?&]edit/.test(location.search))inEditor=true;
+  if(inEditor)document.documentElement.classList.add('in-editor');
   // before/after sliders
   function wire(c){
     var r=c.querySelector('.compare-range');
@@ -20,10 +26,10 @@
     r.addEventListener('input',function(){set(r.value)});
     return {range:r,set:set};
   }
-  document.querySelectorAll('[data-compare]').forEach(wire);
+  if(!inEditor)document.querySelectorAll('[data-compare]').forEach(wire);
   // hero: one slow sweep on load to show the slider can be dragged
   var hero=document.querySelector('.hero [data-compare]');
-  if(hero&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  if(!inEditor&&hero&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     var r=hero.querySelector('.compare-range'),t0=null,dur=2600,stopped=false;
     ['pointerdown','keydown','input'].forEach(function(e){r.addEventListener(e,function(){stopped=true})});
     function step(t){ if(stopped)return; if(t0===null)t0=t; var p=Math.min((t-t0)/dur,1);
@@ -39,7 +45,7 @@
     function k(e){if(e.key==='Escape')close()}
     lb.addEventListener('click',close);document.addEventListener('keydown',k);document.body.appendChild(lb);lb.querySelector('button').focus();
   }
-  document.querySelectorAll('.portfolio-item').forEach(function(item){
+  if(!inEditor)document.querySelectorAll('.portfolio-item').forEach(function(item){
     var frame=item.querySelector('.frame'),img=frame&&frame.querySelector('img'),setup=item.getAttribute('data-setup');
     if(!img)return;
     if(setup){
