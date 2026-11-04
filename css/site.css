@@ -311,3 +311,6 @@ main{padding-bottom:5rem}
 .social-buttons a:hover{border-color:var(--tungsten);color:var(--tungsten)}
 .thanks-more{max-width:1100px;margin:3.5rem auto 0}
 .thanks-more h2{font-size:clamp(1.5rem,3vw,2rem);margin:0}
+
+/* story cards keep their paragraph breaks (stored as blank lines in the text) */
+.portfolio-grid .portfolio-item p{white-space:pre-line}
