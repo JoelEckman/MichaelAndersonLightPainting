@@ -218,9 +218,13 @@ main{padding-bottom:5rem}
 
 /* commissions page */
 .contact-actions{display:flex;flex-wrap:wrap;gap:1rem 1.6rem;align-items:center;margin-top:1.8rem}
-.contact-chip{display:flex;flex-direction:column;font:700 1.05rem var(--display);color:var(--moon);text-decoration:none;line-height:1.25}
+.contact-chip{display:grid;grid-template-columns:auto auto;align-items:baseline;column-gap:.7rem;font:700 1.05rem var(--display);line-height:1.25}
+.contact-chip span{grid-column:1 / -1}
+.contact-chip a{color:var(--moon);text-decoration:none}
 .contact-chip span{font:500 .78rem var(--display);color:var(--mist)}
-.contact-chip:hover{color:var(--tungsten)}
+.contact-chip a:hover{color:var(--tungsten)}
+.contact-chip a.sms,.contact-list a.sms{font:500 .8rem var(--display);color:var(--tungsten);border:1px solid rgba(240,180,92,.5);border-radius:3px;padding:.1rem .45rem;text-decoration:none}
+.contact-list .nums{display:flex;gap:.7rem;align-items:baseline}
 .commission-pricing{padding:3.5rem var(--gutter) 4.5rem}
 .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1.5rem;max-width:1500px;margin:0 auto}
 .price{border:1px solid var(--haze);border-radius:4px;padding:1.6rem 1.5rem;background:rgba(22,34,56,.55)}

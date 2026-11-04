@@ -5,7 +5,7 @@
   var here=location.pathname.replace(/\/$/,'/index.html').replace(/\.html$/,'');
   if(here==='/') here='/index';
   document.querySelectorAll('.main-menu a').forEach(function(a){
-    var p=a.getAttribute('href').split('#')[0].replace(/\.html$/,'');
+    var h=a.getAttribute('href');if(h.indexOf('#')>-1)return;var p=h.replace(/\.html$/,'');
     if(p&&p!=='/index'&&(here===p||here.indexOf(p+'/')===0||(p==='/stories'&&here.indexOf('/stories/')===0)))a.classList.add('is-current');
   });
   // mobile menu
