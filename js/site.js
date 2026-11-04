@@ -12,32 +12,52 @@
   if(t&&n)t.addEventListener('click',function(){var o=n.classList.toggle('open');t.setAttribute('aria-expanded',o)});
   // footer year
   document.querySelectorAll('[data-year]').forEach(function(e){e.textContent=new Date().getFullYear()});
-  // home: setup vs light painting slider
-  document.querySelectorAll('[data-compare]').forEach(function(c){
+  // before/after sliders
+  function wire(c){
     var r=c.querySelector('.compare-range');
-    r.addEventListener('input',function(){c.style.setProperty('--pos',r.value+'%')});
-  });
-  // gallery cards: Before toggle, expand caption, lightbox
+    if(!r)return;
+    var set=function(v){c.style.setProperty('--pos',v+'%')};
+    r.addEventListener('input',function(){set(r.value)});
+    return {range:r,set:set};
+  }
+  document.querySelectorAll('[data-compare]').forEach(wire);
+  // hero: one slow sweep on load to show the slider can be dragged
+  var hero=document.querySelector('.hero [data-compare]');
+  if(hero&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var r=hero.querySelector('.compare-range'),t0=null,dur=2600,stopped=false;
+    ['pointerdown','keydown','input'].forEach(function(e){r.addEventListener(e,function(){stopped=true})});
+    function step(t){ if(stopped)return; if(t0===null)t0=t; var p=Math.min((t-t0)/dur,1);
+      var v=50+Math.sin(p*Math.PI*2)*-32*(1-p*0.15); if(p>=1)v=50;
+      hero.style.setProperty('--pos',v+'%'); r.value=v; if(p<1)requestAnimationFrame(step); }
+    setTimeout(function(){requestAnimationFrame(step)},700);
+  }
+  // gallery cards: slider when there is a setup photo, lightbox, expandable captions
+  function lightbox(src,alt,back){
+    var lb=document.createElement('div');lb.className='lightbox';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');
+    lb.innerHTML='<img alt=""><button type="button">Close</button>';lb.querySelector('img').src=src;lb.querySelector('img').alt=alt;
+    function close(){lb.remove();document.removeEventListener('keydown',k);if(back)back.focus()}
+    function k(e){if(e.key==='Escape')close()}
+    lb.addEventListener('click',close);document.addEventListener('keydown',k);document.body.appendChild(lb);lb.querySelector('button').focus();
+  }
   document.querySelectorAll('.portfolio-item').forEach(function(item){
     var frame=item.querySelector('.frame'),img=frame&&frame.querySelector('img'),setup=item.getAttribute('data-setup');
     if(!img)return;
-    var after=img.getAttribute('src');
     if(setup){
-      var b=document.createElement('button');b.type='button';b.className='toggle-before';b.textContent='Before';b.setAttribute('aria-pressed','false');
-      b.addEventListener('click',function(e){e.stopPropagation();var on=b.getAttribute('aria-pressed')!=='true';
-        b.setAttribute('aria-pressed',on);img.src=on?setup:after;b.textContent=on?'After':'Before'});
-      frame.appendChild(b);
+      frame.classList.add('compare');frame.style.setProperty('--pos','50%');
+      var b=document.createElement('div');b.className='compare-before';
+      var bi=document.createElement('img');bi.src=setup;bi.alt='The same scene before light painting';bi.loading='lazy';b.appendChild(bi);
+      var r=document.createElement('input');r.type='range';r.min=0;r.max=100;r.value=50;r.className='compare-range';
+      r.setAttribute('aria-label','Drag to compare the setup photo with the light painting: '+(img.alt||''));
+      var t1=document.createElement('span');t1.className='compare-tag before-tag';t1.textContent='Before';
+      var t2=document.createElement('span');t2.className='compare-tag after-tag';t2.textContent='After';
+      frame.appendChild(b);frame.appendChild(r);frame.appendChild(t1);frame.appendChild(t2);
+      wire(frame);
     }
     if(document.body.classList.contains('gallery')){
-      var z=document.createElement('button');z.type='button';z.className='zoom';z.setAttribute('aria-label','View larger: '+(img.alt||''));
-      z.addEventListener('click',function(){
-        var lb=document.createElement('div');lb.className='lightbox';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');
-        lb.innerHTML='<img alt=""><button type="button">Close</button>';lb.querySelector('img').src=img.src;lb.querySelector('img').alt=img.alt;
-        function close(){lb.remove();document.removeEventListener('keydown',k);z.focus()}
-        function k(e){if(e.key==='Escape')close()}
-        lb.addEventListener('click',close);document.addEventListener('keydown',k);document.body.appendChild(lb);lb.querySelector('button').focus();
-      });
-      frame.insertBefore(z,frame.firstChild);
+      var z=document.createElement('button');z.type='button';z.className='frame-expand';z.textContent='View larger';
+      z.setAttribute('aria-label','View larger: '+(img.alt||''));
+      z.addEventListener('click',function(e){e.stopPropagation();lightbox(img.src,img.alt,z)});
+      frame.appendChild(z);
       var p=item.querySelector('p');if(p)p.addEventListener('click',function(){p.classList.toggle('open')});
     }
   });
