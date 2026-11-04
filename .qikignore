@@ -1,0 +1,22 @@
+# .qikignore — paths qikSites should neither serve nor overwrite.
+# One path or folder per line. GitHub sync also supports * globs and ! re-includes;
+# local-folder sync matches whole names only.
+# qikSites already skips .git, .github, node_modules, README, licences, changelogs,
+# editor folders, .env*, keys, .npmrc, .netrc and .htpasswd.
+
+# AI / working notes
+claude.md
+CLAUDE.md
+AGENTS.md
+.claude/
+SETUP.md
+notes/
+drafts/
+_scratch/
+
+# Sources and tooling (if the site is built — the built output is what's served)
+src/
+scss/
+package.json
+package-lock.json
+*.config.js

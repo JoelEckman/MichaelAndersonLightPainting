@@ -1,0 +1,115 @@
+/* Michael Anderson Light Painting — site styles */
+:root{
+  --night:#0d1524;      /* page background: Minnesota night sky */
+  --dusk:#162238;       /* raised surfaces */
+  --haze:#26344f;       /* borders, rules */
+  --moon:#e7eaf1;       /* main text */
+  --mist:#a3adc2;       /* secondary text */
+  --tungsten:#f0b45c;   /* accent: warm light of the wands */
+  --tungsten-deep:#c98a2e;
+  --display:"Archivo",system-ui,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --measure:68ch;
+  --gutter:clamp(1.25rem,4vw,3rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--night);color:var(--moon);font:400 1.125rem/1.7 var(--serif);-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--tungsten)}
+a:hover{color:#fff}
+:focus-visible{outline:2px solid var(--tungsten);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-stretch:125%;font-weight:700;line-height:1.1;letter-spacing:-.01em;margin:0 0 .5em}
+h1{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:800}
+h2{font-size:clamp(1.45rem,2.6vw,2rem);margin-top:2.2em}
+h3{font-size:1.1rem;font-stretch:112%;font-weight:500;letter-spacing:0}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.9rem var(--gutter);background:rgba(13,21,36,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--haze)}
+.wordmark{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:1.15rem;color:var(--moon);text-decoration:none;line-height:1.05}
+.wordmark span{display:block;font-weight:500;font-size:.8rem;color:var(--tungsten);font-stretch:112%}
+.main-menu{list-style:none;display:flex;flex-wrap:wrap;gap:.2rem 1.3rem;margin:0;padding:0;font:500 .92rem/1.4 var(--display);font-stretch:112%}
+.main-menu a{color:var(--mist);text-decoration:none;padding:.3rem 0;border-bottom:2px solid transparent}
+.main-menu a:hover,.main-menu a.is-current{color:var(--moon);border-bottom-color:var(--tungsten)}
+.menu-toggle{display:none;font:500 .9rem var(--display);background:none;color:var(--moon);border:1px solid var(--haze);border-radius:4px;padding:.45rem .8rem;cursor:pointer}
+@media (max-width:1060px){
+  .menu-toggle{display:block}
+  #site-nav{position:absolute;inset:100% 0 auto 0;background:var(--night);border-bottom:1px solid var(--haze);display:none;padding:1rem var(--gutter) 1.4rem}
+  #site-nav.open{display:block}
+  .main-menu{flex-direction:column;font-size:1.05rem}
+}
+
+main{padding-bottom:5rem}
+.page-head{max-width:calc(var(--measure) + 2 * var(--gutter));margin:0 auto;padding:4rem var(--gutter) 1.5rem}
+.page-head p{color:var(--mist)}
+
+/* home hero: setup vs light painting */
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,4rem);align-items:center;padding:3rem var(--gutter) 4rem}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-copy p{color:var(--mist);max-width:46ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;margin-top:1.6rem}
+.compare{position:relative;overflow:hidden;border-radius:2px;box-shadow:0 0 0 1px var(--haze),0 30px 80px -30px rgba(240,180,92,.35)}
+.compare-before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.compare-before img,.compare-after img{width:100%;height:100%;object-fit:cover}
+.compare::after{content:"";position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:var(--tungsten);box-shadow:0 0 18px 3px rgba(240,180,92,.7);pointer-events:none}
+.compare-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.compare-range:focus-visible+.compare-tag{outline:2px solid var(--tungsten)}
+.compare-tag{position:absolute;bottom:.8rem;font:500 .78rem var(--display);padding:.25rem .6rem;border-radius:2px;background:rgba(13,21,36,.75);pointer-events:none}
+.before-tag{left:.8rem}.after-tag{right:.8rem;color:var(--tungsten)}
+
+.button{display:inline-block;font:700 .95rem var(--display);font-stretch:112%;color:var(--night);background:var(--tungsten);padding:.8rem 1.3rem;border-radius:3px;text-decoration:none}
+.button:hover{background:#fff;color:var(--night)}
+.text-link{font:500 .95rem var(--display);color:var(--moon)}
+
+/* galleries */
+.home-galleries,.gallery-wrap{padding:0 var(--gutter)}
+.home-galleries h2{margin-top:0}
+.gallery-hint{max-width:var(--measure);margin:0 auto 2rem;color:var(--mist);font-size:.98rem}
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:2.5rem 1.8rem;max-width:1500px;margin:0 auto}
+.portfolio-item{display:flex;flex-direction:column}
+.portfolio-item .frame{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--dusk);margin-bottom:.9rem}
+.portfolio-item .frame img{width:100%;height:100%;object-fit:cover}
+.portfolio-item p{font-size:.98rem;line-height:1.6;color:var(--mist);margin:0 0 .7rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.portfolio-item p.open{-webkit-line-clamp:unset}
+.portfolio-link{margin-top:auto;font:500 .9rem var(--display);font-stretch:112%;text-decoration:none}
+.portfolio-link:hover{text-decoration:underline}
+.categories .portfolio-item p{-webkit-line-clamp:3}
+@media (min-width:1200px){.categories{grid-template-columns:repeat(4,1fr)}}
+.toggle-before{position:absolute;left:.6rem;bottom:.6rem;font:500 .78rem var(--display);color:var(--moon);background:rgba(13,21,36,.8);border:1px solid var(--haze);border-radius:2px;padding:.3rem .65rem;cursor:pointer}
+.toggle-before[aria-pressed="true"]{color:var(--night);background:var(--tungsten);border-color:var(--tungsten)}
+.frame .zoom{position:absolute;inset:0;cursor:zoom-in;background:none;border:0;padding:0}
+
+/* articles */
+.article{max-width:var(--measure);margin:0 auto;padding:0 var(--gutter)}
+.article h2{color:var(--moon)}
+.prose p{margin:0 0 1.1em}
+.photo{margin:2.5rem calc(-1 * min(12vw,10rem));}
+@media (max-width:1100px){.photo{margin:2rem 0}}
+.photo figcaption{max-width:var(--measure);margin:.8rem auto 0;padding:0 var(--gutter);font-size:.95rem;color:var(--mist)}
+@media (max-width:1100px){.photo figcaption{padding:0}}
+.story-link{margin:1.2rem 0 2.5rem}
+.video{position:relative;aspect-ratio:16/9;margin:2rem 0}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.form-slot{margin:2rem 0}
+.back{max-width:var(--measure);margin:3rem auto 0;padding:0 var(--gutter);font-family:var(--display)}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,9,16,.96);display:grid;place-items:center;padding:2rem}
+.lightbox img{max-height:90vh;width:auto}
+.lightbox button{position:absolute;top:1rem;right:1rem;font:500 .9rem var(--display);color:var(--moon);background:none;border:1px solid var(--haze);border-radius:3px;padding:.4rem .8rem;cursor:pointer}
+
+/* qikForms */
+.qf-form label{display:block;font:500 .9rem var(--display);margin:1rem 0 .35rem}
+.qf-form input,.qf-form textarea,.qf-form select{width:100%;font:inherit;font-size:1rem;color:var(--moon);background:var(--dusk);border:1px solid var(--haze);border-radius:3px;padding:.7rem .8rem}
+.qf-form button[type=submit]{margin-top:1.2rem;font:700 .95rem var(--display);color:var(--night);background:var(--tungsten);border:0;border-radius:3px;padding:.8rem 1.4rem;cursor:pointer}
+.qf-msg--success{padding:1.2rem 1.4rem;border:1px solid var(--tungsten);border-radius:3px;color:var(--moon)}
+
+/* footer */
+.site-footer{border-top:1px solid var(--haze);padding:3rem var(--gutter) 2rem;font-size:.95rem;color:var(--mist)}
+.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;max-width:1500px;margin:0 auto}
+.footer-inner p{margin:0 0 .3rem}
+.footer-name{font:700 1.05rem var(--display);font-stretch:125%;color:var(--moon)}
+.social{list-style:none;display:flex;flex-wrap:wrap;gap:1.2rem;margin:0;padding:0;font-family:var(--display)}
+.fine{max-width:1500px;margin:2.5rem auto 0;font-size:.85rem}
