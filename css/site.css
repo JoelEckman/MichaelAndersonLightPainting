@@ -326,3 +326,10 @@ main{padding-bottom:5rem}
 .lightbox .lb-prev{left:1rem}.lightbox .lb-next{right:1rem}
 .lightbox .lb-prev:hover,.lightbox .lb-next:hover{border-color:var(--tungsten);color:var(--tungsten)}
 .lightbox .lb-count{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font:500 .85rem var(--display);color:var(--mist)}
+
+/* heading above the commission form */
+.form-slot{border:1px solid var(--haze);border-radius:4px;padding:1.6rem 1.5rem;background:rgba(12,17,28,.7)}
+.form-heading{font-size:clamp(1.3rem,2.4vw,1.6rem);margin:0 0 .3rem;position:relative;padding-bottom:.5em}
+.form-heading::after{content:"";position:absolute;left:-.1em;bottom:0;width:min(200px,60%);height:14px;background:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 240 24%27 preserveAspectRatio=%27none%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 x2=%271%27%3E%3Cstop offset=%270%27 stop-color=%27%23f0b45c%27 stop-opacity=%270%27/%3E%3Cstop offset=%27.3%27 stop-color=%27%23f0b45c%27/%3E%3Cstop offset=%27.85%27 stop-color=%27%23ffe0ad%27/%3E%3Cstop offset=%271%27 stop-color=%27%23fff%27 stop-opacity=%270%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%27M3 14 C 70 14, 120 3, 175 9 S 230 19, 237 15%27 fill=%27none%27 stroke=%27url(%23g)%27 stroke-width=%273%27 stroke-linecap=%27round%27/%3E%3C/svg%3E") left center/100% 100% no-repeat;filter:drop-shadow(0 0 4px rgba(240,180,92,.9))}
+.form-note{color:var(--mist);font-size:.95rem;margin:.7rem 0 .4rem}
+@media (max-width:860px){.request-grid{gap:2rem}.form-slot{padding:1.3rem 1.1rem}}
