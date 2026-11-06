@@ -1,0 +1,80 @@
+# Checks every change a client sends from their Claude skill (branches named client/...).
+# Clean content edits are merged into the live branch, which qikSites publishes.
+# Anything else becomes a pull request for Sans Terra to review.
+name: Client edits
+
+on:
+  push:
+    branches: ['client/**']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: client-edits
+  cancel-in-progress: false
+
+env:
+  LIVE_BRANCH: main
+  # 'true'  = clean edits go live on their own; everything else waits for review
+  # 'false' = every client edit waits for review
+  AUTO_MERGE: 'true'
+  # New images are published first, then the pages that use them after this many seconds,
+  # so nobody loads a page before its images have synced (Cloudflare caches 404s for hours).
+  MEDIA_WAIT_SECONDS: '180'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the edit (rules come from the live branch, not the client's branch)
+        id: guard
+        run: |
+          git fetch origin "$LIVE_BRANCH"
+          git show "origin/$LIVE_BRANCH:.github/qik/guard.py" > /tmp/guard.py
+          set +e
+          python3 /tmp/guard.py --repo . --base "origin/$LIVE_BRANCH" --head HEAD --report /tmp/report.md
+          echo "result=$?" >> "$GITHUB_OUTPUT"
+          cat /tmp/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish the clean edit
+        id: publish
+        if: steps.guard.outputs.result == '0' && env.AUTO_MERGE == 'true'
+        continue-on-error: true
+        run: |
+          git config user.name  "client-edits[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q "$LIVE_BRANCH"
+          git pull -q --ff-only origin "$LIVE_BRANCH"
+          BASE=$(git merge-base HEAD "origin/$GITHUB_REF_NAME")
+          MEDIA=$(git diff --name-only --diff-filter=AM "$BASE" "origin/$GITHUB_REF_NAME" -- media/)
+          PAGES=$(git diff --name-only "$BASE" "origin/$GITHUB_REF_NAME" -- . ':!media/')
+          if [ -n "$MEDIA" ] && [ -n "$PAGES" ]; then
+            echo "$MEDIA" | xargs git checkout "origin/$GITHUB_REF_NAME" --
+            git commit -q -m "Client media: ${GITHUB_REF_NAME#client/}"
+            git push origin "$LIVE_BRANCH"
+            echo "Media pushed; waiting ${MEDIA_WAIT_SECONDS}s for qikSites to sync it before the pages."
+            sleep "$MEDIA_WAIT_SECONDS"
+            git pull -q --ff-only origin "$LIVE_BRANCH"
+          fi
+          git merge --no-ff "origin/$GITHUB_REF_NAME" -m "Client edit: ${GITHUB_REF_NAME#client/}"
+          git push origin "$LIVE_BRANCH"
+          git push origin --delete "$GITHUB_REF_NAME"
+
+      - name: Send for review
+        if: steps.guard.outputs.result != '0' || env.AUTO_MERGE != 'true' || steps.publish.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.publish.outcome }}" = "failure" ]; then
+            printf '\n\n**Note:** the edit passed the check but could not be merged automatically (the live site changed at the same time). Merge or resolve by hand.\n' >> /tmp/report.md
+          fi
+          gh pr create --base "$LIVE_BRANCH" --head "$GITHUB_REF_NAME" \
+            --title "Client edit for review: ${GITHUB_REF_NAME#client/}" \
+            --body-file /tmp/report.md \
+          || gh pr comment "$GITHUB_REF_NAME" --body-file /tmp/report.md
